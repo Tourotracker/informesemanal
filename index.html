@@ -387,10 +387,10 @@ function renderEvol(){
        pointBackgroundColor:(ctx)=>ctx.dataIndex<MAX_S26?(d26[ctx.dataIndex]===0?'#fff':col):'transparent',
        pointBorderColor:(ctx)=>ctx.dataIndex<MAX_S26?col:'transparent',
        pointBorderWidth:2,
-       pointRadius:(ctx)=>{if(ctx.dataIndex>=MAX_S26)return 0;if(ctx.dataIndex===s-1)return 7;return d26[ctx.dataIndex]===0?5:3;},
+       pointRadius:(ctx)=>{if(ctx.dataIndex>=MAX_S26)return 0;if(ctx.dataIndex===s-1)return 4;return d26[ctx.dataIndex]===0?2:1.5;},
        pointHoverRadius:7,borderWidth:2.5,tension:0.3,fill:false,spanGaps:false},
-      {label:'2025',data:d25,borderColor:'#888780',backgroundColor:'transparent',pointBackgroundColor:'#888780',pointRadius:2,pointHoverRadius:5,borderWidth:1.8,tension:0.3,fill:false,borderDash:[5,3]},
-      {label:'2024',data:d24,borderColor:'#EF9F27',backgroundColor:'transparent',pointBackgroundColor:'#EF9F27',pointRadius:2,pointHoverRadius:5,borderWidth:1.8,tension:0.3,fill:false,borderDash:[2,4]}
+      {label:'2025',data:d25,borderColor:'#888780',backgroundColor:'transparent',pointBackgroundColor:'#888780',pointRadius:1,pointHoverRadius:3,borderWidth:1.8,tension:0.3,fill:false,borderDash:[5,3]},
+      {label:'2024',data:d24,borderColor:'#EF9F27',backgroundColor:'transparent',pointBackgroundColor:'#EF9F27',pointRadius:1,pointHoverRadius:3,borderWidth:1.8,tension:0.3,fill:false,borderDash:[2,4]}
     ]},
     options:{responsive:true,maintainAspectRatio:false,
       interaction:{mode:'index',intersect:false},
@@ -448,10 +448,10 @@ function renderCD(){
       {label:'2026',data:pct26,borderColor:'#1D9E75',backgroundColor:'#1D9E7518',
        pointBackgroundColor:(ctx)=>ctx.dataIndex<MAX_S26?(pct26[ctx.dataIndex]===0?'#fff':'#1D9E75'):'transparent',
        pointBorderColor:(ctx)=>ctx.dataIndex<MAX_S26?'#1D9E75':'transparent',
-       pointBorderWidth:2,pointRadius:(ctx)=>ctx.dataIndex>=MAX_S26?0:(pct26[ctx.dataIndex]===0?5:3),
+       pointBorderWidth:1,pointRadius:(ctx)=>ctx.dataIndex>=MAX_S26?0:(pct26[ctx.dataIndex]===0?2:1.5),
        pointHoverRadius:6,borderWidth:2.5,tension:0.3,fill:false,spanGaps:true},
-      {label:'2025',data:pct25,borderColor:'#888780',backgroundColor:'transparent',pointBackgroundColor:'#888780',pointRadius:2,pointHoverRadius:5,borderWidth:1.8,tension:0.3,fill:false,borderDash:[5,3]},
-      {label:'2024',data:pct24,borderColor:'#EF9F27',backgroundColor:'transparent',pointBackgroundColor:'#EF9F27',pointRadius:2,pointHoverRadius:5,borderWidth:1.8,tension:0.3,fill:false,borderDash:[2,4]}
+      {label:'2025',data:pct25,borderColor:'#888780',backgroundColor:'transparent',pointBackgroundColor:'#888780',pointRadius:1,pointHoverRadius:3,borderWidth:1.8,tension:0.3,fill:false,borderDash:[5,3]},
+      {label:'2024',data:pct24,borderColor:'#EF9F27',backgroundColor:'transparent',pointBackgroundColor:'#EF9F27',pointRadius:1,pointHoverRadius:3,borderWidth:1.8,tension:0.3,fill:false,borderDash:[2,4]}
     ]},
     options:{responsive:true,maintainAspectRatio:false,
       interaction:{mode:'index',intersect:false},
