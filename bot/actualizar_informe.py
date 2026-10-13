@@ -14,7 +14,8 @@ Uso (dos pasos, para que el texto de análisis lo redacte quien ejecuta el bot):
        → escribe la semana en index.html con ese texto de análisis
 
 Códigos de salida: 0 = OK, 3 = nada pendiente, 4 = empieza temporada nueva (requiere
-ajuste manual del informe), 1/2 = error.
+ajuste manual del informe), 5 = semana sin ningún dato (si el almacén estuvo cerrado, repetir
+con --permitir-vacia para cargarla a 0, como se hacía en el Excel), 1/2 = error.
 """
 import argparse, datetime as dt, json, re, sys
 
@@ -124,6 +125,7 @@ def resumen(inf, s, lunes, viernes, w):
             a2026=dict(tareas=acum(A['t26'], s), lineas=acum(A['l26'], s), cd=acum(A['cd26'], s)),
             a2025=dict(tareas=acum(A['t25'], s), lineas=acum(A['l25'], s), cd=acum(A['cd25'], s))),
         semana_mudanza_2025=s in [34],
+        semana_sin_actividad=w['sin_actividad'],
         textos_anteriores=inf.obj('textos'),
     )
     return r
@@ -136,6 +138,8 @@ def main():
     ap.add_argument('--resumen', action='store_true')
     ap.add_argument('--texto', help='fichero con el párrafo de análisis (HTML: <b>, <br>)')
     ap.add_argument('--hoy', help='fecha de referencia aaaa-mm-dd (pruebas)')
+    ap.add_argument('--permitir-vacia', action='store_true',
+                    help='cargar a 0 una semana sin datos (almacén cerrado, p. ej. Navidad)')
     a = ap.parse_args()
     hoy = dt.date.fromisoformat(a.hoy) if a.hoy else dt.date.today()
 
@@ -151,8 +155,11 @@ def main():
 
     hist = cargar_historico(a.dashboard)
     w = datos_semana(hist, lunes)
-    if not w['lineas']:
-        raise SystemExit(f'ERROR: la semana S{s} ({lunes:%d/%m}–{viernes:%d/%m}) no tiene ningún dato en el histórico del dashboard')
+    w['sin_actividad'] = not w['lineas']
+    if w['sin_actividad'] and not a.permitir_vacia:
+        print(f'SEMANA_VACIA: la S{s} ({lunes:%d/%m}–{viernes:%d/%m}) no tiene datos en el histórico del dashboard. '
+              'Si el almacén estuvo cerrado (p. ej. Navidad), repite con --permitir-vacia para cargarla a 0.')
+        sys.exit(5)
 
     if a.resumen:
         print(json.dumps(resumen(inf, s, lunes, viernes, w), ensure_ascii=False, indent=1))
@@ -160,7 +167,7 @@ def main():
     if not a.texto:
         raise SystemExit('Falta --texto (o usa --resumen)')
     texto = open(a.texto, encoding='utf-8').read().strip()
-    if len(texto) < 80:
+    if len(texto) < (20 if w['sin_actividad'] else 80):
         raise SystemExit('El texto de análisis es demasiado corto')
 
     i = s - 1
